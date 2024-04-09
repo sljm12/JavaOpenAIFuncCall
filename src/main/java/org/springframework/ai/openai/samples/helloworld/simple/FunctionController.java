@@ -1,8 +1,14 @@
 package org.springframework.ai.openai.samples.helloworld.simple;
 
+import java.util.List;
+
 import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -49,10 +55,18 @@ public class FunctionController{
 			+ "</tool_call>\r\n"
 			+ "";
 	
-	private SystemPromptTemplate systemPromptTemplate=new SystemPromptTemplate(systemPrompt);
+	private SystemPromptTemplate systemPromptTemplate=new SystemPromptTemplate("Test");
 	
 	@Autowired
 	public FunctionController(ChatClient chatClient) {
 		this.chatClient=chatClient;
+	}
+	
+	@GetMapping("/ai/message")
+	public String getMessage() {
+		Message system = systemPromptTemplate.createMessage();
+		UserMessage user = new UserMessage("Please tell me what to do?");
+		Prompt prompt=new Prompt(List.of(user,system));
+		return prompt.getContents();
 	}
 }
