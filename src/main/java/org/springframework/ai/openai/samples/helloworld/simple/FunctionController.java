@@ -1,13 +1,18 @@
 package org.springframework.ai.openai.samples.helloworld.simple;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Description;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,6 +62,16 @@ public class FunctionController{
 	
 	private SystemPromptTemplate systemPromptTemplate=new SystemPromptTemplate("Test");
 	
+	@Configuration
+	static class Config {
+		@Bean(name = "CurrentWeather")
+		@Description("Get the weather in location") // function description
+		public Function<MockWeatherService.Request, MockWeatherService.Response> weatherFunction1() {
+			return new MockWeatherService();
+		}
+	}
+
+	
 	@Autowired
 	public FunctionController(ChatClient chatClient) {
 		this.chatClient=chatClient;
@@ -64,9 +79,19 @@ public class FunctionController{
 	
 	@GetMapping("/ai/message")
 	public String getMessage() {
-		Message system = systemPromptTemplate.createMessage();
-		UserMessage user = new UserMessage("Please tell me what to do?");
-		Prompt prompt=new Prompt(List.of(user,system));
+		//Message system = systemPromptTemplate.createMessage();
+		//UserMessage user = new UserMessage("Please tell me what to do?");
+		//Prompt prompt=new Prompt(List.of(user,system));
+		
+		//UserMessage userMessage = new UserMessage("What's the weather like in San Francisco, Tokyo, and Paris?");
+
+		UserMessage userMessage = new UserMessage("What's the weather like in San Francisco, Tokyo, and Paris?");
+		Prompt prompt= new Prompt(List.of(userMessage),
+				OpenAiChatOptions.builder().withFunction("CurrentWeather").build());
+
+		//ChatResponse response = chatClient.call(prompt); // (1) Enable the function
+
+		
 		return prompt.getContents();
 	}
 }
