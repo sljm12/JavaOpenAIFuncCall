@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 public class HermesFunctionSchemaExtractor {
 
     private Function function;
@@ -18,16 +20,53 @@ public class HermesFunctionSchemaExtractor {
     private String functionName;
     private String functionDescription;
 
+    private ArrayList<RecordParameter> parameters;
+    
     public HermesFunctionSchemaExtractor(Function function){
         this.function = function;
         extractClassInfo();
+        Method m = extractApply();
+        this.parameters=extractParameterInfo(m);
     }
 
-    public void extractClassInfo(){
+    
+    public String getFunctionName() {
+		return functionName;
+	}
+
+
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}
+
+
+	public String getFunctionDescription() {
+		return functionDescription;
+	}
+
+
+	public void setFunctionDescription(String functionDescription) {
+		this.functionDescription = functionDescription;
+	}
+
+	
+	public ArrayList<RecordParameter> getParameters() {
+		return parameters;
+	}
+
+
+	public void setParameters(ArrayList<RecordParameter> parameters) {
+		this.parameters = parameters;
+	}
+
+
+	public void extractClassInfo(){
         Attributes a = this.function.getClass().getDeclaredAnnotation(Attributes.class);
         this.functionName =  a.title();
         this.functionDescription = a.description();
     }
+    
+    
 
     private void extractParameterInfo(){
         Method m = extractApply();
@@ -45,8 +84,8 @@ public class HermesFunctionSchemaExtractor {
         return null;
     }
 
-    private void extractParameterInfo(Method m){
-        ArrayList arrParameters =new ArrayList<RecordParameter>();
+    private ArrayList<RecordParameter> extractParameterInfo(Method m){
+        ArrayList<RecordParameter> arrParameters =new ArrayList<RecordParameter>();
 
         Parameter[] parameters = m.getParameters();
         for (Parameter p : parameters) {
@@ -62,18 +101,27 @@ public class HermesFunctionSchemaExtractor {
                 System.out.println(result);
 
                 rp.setRequired(a.required());
+                rp.setDescription(a.description());
             }
 
             for(Field field:p.getType().getDeclaredFields()){
+            	FieldInfo fi =new FieldInfo(field.getName(),a.description(),field.getType().toString());
                 rp.addField(field.getName(), field.getType().toString());
+                rp.addFieldInfo(fi);
             }
 
             arrParameters.add(rp);
         }
+        return arrParameters;
+    }
+    
+    public JSONObject generate() {
+    	
     }
 
     public static String extractSchema(Function function){
-        Method[] methods = function.getClass().getDeclaredMethods()
+        Method[] methods = function.getClass().getDeclaredMethods();
+        return null;
 
     }
 }
