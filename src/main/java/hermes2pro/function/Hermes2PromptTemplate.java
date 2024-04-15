@@ -20,18 +20,16 @@ public class Hermes2PromptTemplate {
 	
 	@Value("classpath:/prompts/hermes2-pro.st")
 	private Resource systemResource;
-	
-	@Value("${hermes2.prompt}")
-	private String property;
-	
+
+	public Hermes2PromptTemplate(Resource resource){
+		this.systemResource = resource;
+	}
 	public Message createTemplate() {
 		SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResource);
 		return systemPromptTemplate.createMessage(Map.of("tools","",TOOL_FORMAT,toolformat,ARGUMENT_CALL,argumentcall));
 	}
 	
 	public boolean testResource(){
-		System.out.println("Property "+property);
-		Resource r=new ClassPathResource(property);
-		return r.exists();
+		return systemResource.exists();
 	}
 }

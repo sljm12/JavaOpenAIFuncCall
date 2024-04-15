@@ -67,8 +67,8 @@ public class TestBean {
 	
 	@Test
 	void testPrompt() {
-		//Hermes2PromptTemplate template=new Hermes2PromptTemplate();
-		//System.out.println(template.createTemplate());
+		Hermes2PromptTemplate template=new Hermes2PromptTemplate(systemResource);
+		System.out.println(template.createTemplate());
 		/*
 		SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResource);
 		Message message= systemPromptTemplate.createMessage(Map.of(Hermes2PromptTemplate.TOOLS,"",
@@ -80,14 +80,8 @@ public class TestBean {
 	}
 	
 	@Test
-	void testClasspathResource() {
-		Resource r=new ClassPathResource("/prompts/hermes2-pro.st");
-		assertTrue(r.exists());
-	}
-	
-	@Test
 	void testClasspathResourceFromClass() {
-		Hermes2PromptTemplate template=new Hermes2PromptTemplate();
+		Hermes2PromptTemplate template=new Hermes2PromptTemplate(systemResource);
 		assertTrue(template.testResource());
 	}
 	
