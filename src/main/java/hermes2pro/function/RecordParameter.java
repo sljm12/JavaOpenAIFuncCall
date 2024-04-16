@@ -1,8 +1,6 @@
 package hermes2pro.function;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RecordParameter {
@@ -10,10 +8,10 @@ public class RecordParameter {
     private String parameterName;
     private boolean required;
     private String description;
+    private FieldInfo[] fieldInfos;
 
     private Map<String,String> fields=new HashMap<String,String>();
-    
-    private List<FieldInfo> fieldInfoList = new ArrayList<FieldInfo>();
+ 
 
     public void setParameterName(String parameterName){
         this.parameterName = parameterName;
@@ -38,10 +36,6 @@ public class RecordParameter {
     public Map<String,String> getFields(){
     	return this.fields;
     }
-    
-    public void addFieldInfo(FieldInfo fi) {
-    	this.fieldInfoList.add(fi);
-    }
 
 	public String getDescription() {
 		return description;
@@ -50,6 +44,12 @@ public class RecordParameter {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-    
-    
+
+	public FieldInfo[] getFieldInfos() {
+		return fieldInfos;
+	}
+
+	public void setFieldInfos(FieldInfo[] fieldInfos) {
+		this.fieldInfos = fieldInfos;
+	}        
 }

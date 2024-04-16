@@ -6,21 +6,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.openai.samples.helloworld.simple.MockWeatherService;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 class HermesFunctionSchemaExtractorTest {
+
+	private static ObjectMapper mapper = new ObjectMapper();	
+	HermesFunctionSchemaExtractor ex = new HermesFunctionSchemaExtractor(new MockWeatherService());
 	
+	@BeforeAll
+	public static void setup() {
+		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	}
+
 	@Test
 	public void testExtractClassInfo() {
-		HermesFunctionSchemaExtractor ex = new HermesFunctionSchemaExtractor(new MockWeatherService());
+		
 		assertEquals("MockWeatherService", ex.getFunctionName());
 		assertEquals("Gets the weather information given a location and the unit", ex.getFunctionDescription());
 	}
 	
 	@Test
-	public void testExtractParameters() {
-		HermesFunctionSchemaExtractor ex = new HermesFunctionSchemaExtractor(new MockWeatherService());
+	public void testExtractParameters() {		
 		ArrayList<RecordParameter> arr=ex.getParameters();
 		assertEquals(1, arr.size());
 		RecordParameter rp = arr.get(0);
@@ -35,4 +48,11 @@ class HermesFunctionSchemaExtractorTest {
 		assertTrue(map.containsKey("unit"));
 	}
 
+	
+	@Test
+	public void generate() throws JsonProcessingException {		
+		JSONObject object= ex.generate();
+		//System.out.println(object.toString());
+		System.out.println(mapper.writeValueAsString(object.toMap()));
+	}
 }

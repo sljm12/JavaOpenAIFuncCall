@@ -88,34 +88,105 @@ public class HermesFunctionSchemaExtractor {
         ArrayList<RecordParameter> arrParameters =new ArrayList<RecordParameter>();
 
         Parameter[] parameters = m.getParameters();
+        
         for (Parameter p : parameters) {
             RecordParameter rp = new RecordParameter();
             System.out.println("Parameter "+p.getName());
             rp.setParameterName(p.getName());
 
 
-            Attributes a = p.getType().getAnnotation(Attributes.class);
-            if(a != null){
-                String[] s={a.annotationType().toString(),Boolean.toString(a.required()),a.description()};
-                String result = Arrays.stream(s).map(i -> i.toString()).collect(Collectors.joining(", "));
-                System.out.println(result);
-
-                rp.setRequired(a.required());
-                rp.setDescription(a.description());
-            }
-
-            for(Field field:p.getType().getDeclaredFields()){
-            	FieldInfo fi =new FieldInfo(field.getName(),a.description(),field.getType().toString());
-                rp.addField(field.getName(), field.getType().toString());
-                rp.addFieldInfo(fi);
-            }
-
+            extractAttributeAnnotation(p, rp);
+            
+            FieldInfo[] fi=extractArgumentAnnotation(p);
+            rp.setFieldInfos(fi);
+            
             arrParameters.add(rp);
         }
         return arrParameters;
     }
     
+    private void extractAttributeAnnotation(Parameter p, RecordParameter rp) {
+    	Attributes a = p.getType().getAnnotation(Attributes.class);
+    	if(a != null){
+            String[] s={a.annotationType().toString(),Boolean.toString(a.required()),a.description()};
+            String result = Arrays.stream(s).map(i -> i.toString()).collect(Collectors.joining(", "));            
+
+            rp.setRequired(a.required());
+            rp.setDescription(a.description());
+        }
+
+        for(Field field:p.getType().getDeclaredFields()){        	
+            rp.addField(field.getName(), field.getType().toString());            
+        }
+    }
+    
+    private FieldInfo[] extractArgumentAnnotation(Parameter p) {
+    	ArrayList<FieldInfo> infos = new ArrayList<FieldInfo>();
+    	Argument[] arguments = p.getType().getAnnotationsByType(Argument.class);
+    	for(Argument a:arguments) {
+    		FieldInfo info=new FieldInfo(a.name(),a.description(),a.type());
+    		infos.add(info);
+    	}
+    	
+    	return infos.toArray(new FieldInfo[0]);
+    }
+    
+    
     public JSONObject generate() {
+    	JSONObject object = new JSONObject();
+    	object.put("type", "function");
+    	object.put("function", generateFunction());
+    	
+    	return object;
+    }
+    
+    private JSONObject generateFunction() {
+    	JSONObject object=new JSONObject();
+    	object.put("name", functionName);
+    	object.put("description", generateDescription());
+    	object.put("parameters", generateParameters());
+    	
+    	return object;
+    }
+    
+    private String generateDescription() {
+    	StringBuilder builder=new StringBuilder();
+    	    	    	
+    	builder.append(functionName+"(" + getFunctionParameter() +") -> dict\n\n");
+    	
+    	//Arguments
+    	builder.append("Args:\n\n");
+    	
+    	RecordParameter rp = this.parameters.get(0);
+    	FieldInfo[] fis=rp.getFieldInfos();
+    	
+    	for(FieldInfo fi:fis) {
+    		builder.append(fi.name()+" ("+fi.type()+"): "+fi.description()+"\n\n");
+    	}
+    	return builder.toString();
+    }
+    
+    private String getFunctionParameter() {
+    	RecordParameter rp = this.parameters.get(0);
+    	
+    	return Arrays.stream(rp.getFieldInfos()).map(i -> i.name()+":"+i.type()).collect(Collectors.joining(","));    	
+    }
+    
+    private JSONObject generateParameters() {
+    	JSONObject object = new JSONObject();
+    	object.put("type", "object");
+    	
+    	FieldInfo[] fis=this.parameters.get(0).getFieldInfos();
+    	
+    	JSONObject properties=new JSONObject();
+    	for(FieldInfo fi:fis) {
+    		JSONObject propertiesType=new JSONObject();
+    		propertiesType.put("type",fi.type());
+    		properties.put(fi.name(), propertiesType);
+    	}
+    	
+    	object.put("properties", properties);
+    	return object;
     	
     }
 
