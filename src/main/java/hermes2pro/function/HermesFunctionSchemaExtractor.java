@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -99,9 +100,13 @@ public class HermesFunctionSchemaExtractor {
             
             FieldInfo[] fi=extractArgumentAnnotation(p);
             rp.setFieldInfos(fi);
-            
+
+            rp.setReturnType(extractMethodReturnType(m));
+
             arrParameters.add(rp);
         }
+
+
         return arrParameters;
     }
     
@@ -129,6 +134,17 @@ public class HermesFunctionSchemaExtractor {
     	}
     	
     	return infos.toArray(new FieldInfo[0]);
+    }
+
+    private FieldInfo[] extractMethodReturnType(Method m){
+        List<FieldInfo> fis = new ArrayList<FieldInfo>();
+        Argument[] as=m.getReturnType().getAnnotationsByType(Argument.class);
+
+        for(Argument a:as) {
+            FieldInfo fi = new FieldInfo(a.name(), a.description(), a.type());
+            fis.add(fi);
+        }
+        return fis.toArray(new FieldInfo[0]);
     }
     
     
@@ -163,6 +179,15 @@ public class HermesFunctionSchemaExtractor {
     	for(FieldInfo fi:fis) {
     		builder.append(fi.name()+" ("+fi.type()+"): "+fi.description()+"\n\n");
     	}
+
+        //Return Type
+        builder.append("\n\nReturns:\n");
+        FieldInfo[] returnTypes=rp.getReturnType();
+
+        for(FieldInfo fi: returnTypes) {
+            builder.append(fi.type() + ": " + fi.description()+"\n");
+        }
+
     	return builder.toString();
     }
     

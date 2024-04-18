@@ -10,6 +10,8 @@ public class RecordParameter {
     private String description;
     private FieldInfo[] fieldInfos;
 
+	private FieldInfo[] returnType;
+
     private Map<String,String> fields=new HashMap<String,String>();
  
 
@@ -51,5 +53,13 @@ public class RecordParameter {
 
 	public void setFieldInfos(FieldInfo[] fieldInfos) {
 		this.fieldInfos = fieldInfos;
-	}        
+	}
+
+	public FieldInfo[] getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(FieldInfo[] returnType) {
+		this.returnType = returnType;
+	}
 }

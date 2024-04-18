@@ -13,13 +13,13 @@ public class MockWeatherService implements Function<Request, Response>{
 	public enum Unit { C, F }
 
 	@Attributes(required=true, description = "location: location to look for, unit: the temperature unit to return the answer in")
-	@Argument(name="location", description = "location to look for",type="String")
-	@Argument(name="unit", description="the unit of the temperature that the answer is in",type="String")
+	@Argument(name="location", description = "location to look for",type="str")
+	@Argument(name="unit", description="the unit of the temperature that the answer is in",type="str")
 	public record Request(String location, Unit unit) {}
 
 	@Attributes(required=true, description = "temp (double): the numeric value of the temperature, unit: the unit of the temperature that the answer is in")
 	@Argument(name="temp", description = "the numeric value of the temperature",type="double")
-	@Argument(name="unit", description="the unit of the temperature that the answer is in",type="String")	
+	@Argument(name="unit", description="the unit of the temperature that the answer is in",type="str")	
 	public record Response(double temp, Unit unit) {}
 
 	@Attributes(title = "MockWeatherService", description = "Gets the weather information given a location and the unit")
