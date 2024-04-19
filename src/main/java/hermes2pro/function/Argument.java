@@ -1,8 +1,11 @@
 package hermes2pro.function;
 
 import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-@Repeatable(value = Arguments.class)
+@Retention(RetentionPolicy.RUNTIME)
+@Repeatable(Arguments.class)
 public @interface Argument {
     String name();
     String description();

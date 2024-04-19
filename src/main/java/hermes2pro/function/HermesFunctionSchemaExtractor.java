@@ -1,5 +1,7 @@
 package hermes2pro.function;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.reinert.jjschema.Attributes;
 
 import java.lang.reflect.Array;
@@ -155,6 +157,11 @@ public class HermesFunctionSchemaExtractor {
     	
     	return object;
     }
+
+    public String generateString() throws JsonProcessingException {
+        ObjectMapper mapper=new ObjectMapper();
+        return mapper.writeValueAsString(generate().toMap());
+    }
     
     private JSONObject generateFunction() {
     	JSONObject object=new JSONObject();
@@ -164,6 +171,8 @@ public class HermesFunctionSchemaExtractor {
     	
     	return object;
     }
+
+
     
     private String generateDescription() {
     	StringBuilder builder=new StringBuilder();

@@ -67,8 +67,8 @@ public class TestBean {
 	
 	@Test
 	void testPrompt() {
-		Hermes2PromptTemplate template=new Hermes2PromptTemplate(systemResource);
-		System.out.println(template.createTemplate());
+		//Hermes2PromptTemplate template=new Hermes2PromptTemplate(systemResource);
+		//System.out.println(template.createTemplate());
 		/*
 		SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResource);
 		Message message= systemPromptTemplate.createMessage(Map.of(Hermes2PromptTemplate.TOOLS,"",
