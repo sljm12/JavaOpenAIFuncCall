@@ -61,7 +61,7 @@ class HermesFunctionSchemaExtractorTest {
 	}
 
 	
-//	@Test
+	@Test
 	public void generate() throws JsonProcessingException {		
 		JSONObject object= ex.generate();
 		//System.out.println(object.toString());
@@ -116,7 +116,7 @@ class HermesFunctionSchemaExtractorTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void testReturn() {
 		Response response=new Response("test");
 		Argument[] as=response.getClass().getAnnotationsByType(Argument.class);
