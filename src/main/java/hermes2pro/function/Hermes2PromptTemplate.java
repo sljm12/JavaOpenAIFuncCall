@@ -41,7 +41,7 @@ public class Hermes2PromptTemplate {
 
 		String s = tools.stream().collect(Collectors.joining("\n\n"));
 
-		return systemPromptTemplate.createMessage(Map.of("tools","",TOOL_FORMAT,toolformat,ARGUMENT_CALL,argumentcall));
+		return systemPromptTemplate.createMessage(Map.of("tools",s,TOOL_FORMAT,toolformat,ARGUMENT_CALL,argumentcall));
 	}
 	
 	public boolean testResource(){
