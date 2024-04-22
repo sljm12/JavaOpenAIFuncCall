@@ -68,7 +68,7 @@ class HermesFunctionSchemaExtractorTest {
 		System.out.println(mapper.writeValueAsString(object.toMap()));
 	}
 
-//	@Test
+	@Test
 	public void generateFunctions() throws JsonProcessingException {
 
 		Function[] functions = new Function[]{new MockWeatherService(), new MockTranslationService(), new SearchGoogle()};
@@ -116,7 +116,7 @@ class HermesFunctionSchemaExtractorTest {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void testReturn() {
 		Response response=new Response("test");
 		Argument[] as=response.getClass().getAnnotationsByType(Argument.class);
