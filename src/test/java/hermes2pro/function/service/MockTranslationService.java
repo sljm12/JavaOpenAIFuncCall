@@ -1,10 +1,10 @@
 package hermes2pro.function.service;
 
-import com.github.reinert.jjschema.Attributes;
-import hermes2pro.function.Argument;
-import org.springframework.ai.openai.samples.helloworld.simple.MockWeatherService;
-
 import java.util.function.Function;
+
+import com.github.reinert.jjschema.Attributes;
+
+import functioncall.Argument;
 
 @Attributes(title = "translate", description = "Translate the text to the specified language")
 public class MockTranslationService implements Function<MockTranslationService.Request, MockTranslationService.Response> {

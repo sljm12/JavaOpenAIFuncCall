@@ -1,10 +1,5 @@
-package hermes2pro.function;
+package functioncall.hermes2pro;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.reinert.jjschema.Attributes;
-
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -15,6 +10,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.reinert.jjschema.Attributes;
+
+import functioncall.Argument;
+import functioncall.FieldInfo;
+import functioncall.RecordParameter;
 
 public class HermesFunctionSchemaExtractor {
 

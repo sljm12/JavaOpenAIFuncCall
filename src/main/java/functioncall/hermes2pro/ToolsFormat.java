@@ -1,4 +1,4 @@
-package hermes2pro.function;
+package functioncall.hermes2pro;
 
 import java.util.function.Function;
 

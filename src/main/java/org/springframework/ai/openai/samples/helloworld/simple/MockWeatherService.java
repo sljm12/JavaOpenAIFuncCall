@@ -2,11 +2,13 @@ package org.springframework.ai.openai.samples.helloworld.simple;
 
 import java.util.function.Function;
 
-import com.github.reinert.jjschema.Attributes;
-import hermes2pro.function.Argument;
 import org.springframework.ai.openai.samples.helloworld.simple.MockWeatherService.Request;
 import org.springframework.ai.openai.samples.helloworld.simple.MockWeatherService.Response;
 import org.springframework.context.annotation.Description;
+
+import com.github.reinert.jjschema.Attributes;
+
+import functioncall.Argument;
 @Description("Get the weather in location")
 @Attributes(title = "MockWeatherService", description = "Gets the weather information given a location and the unit")
 public class MockWeatherService implements Function<Request, Response>{

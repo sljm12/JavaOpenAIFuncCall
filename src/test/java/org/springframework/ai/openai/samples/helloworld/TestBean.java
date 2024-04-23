@@ -18,7 +18,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import hermes2pro.function.Hermes2PromptTemplate;
+import functioncall.hermes2pro.Hermes2PromptTemplate;
 
 
 @SpringBootTest(classes = Application.class)

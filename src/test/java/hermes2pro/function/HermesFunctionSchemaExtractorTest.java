@@ -22,6 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.reinert.jjschema.Attributes;
 
+import functioncall.Argument;
+import functioncall.RecordParameter;
+import functioncall.hermes2pro.HermesFunctionSchemaExtractor;
 import hermes2pro.function.service.MockTranslationService;
 import hermes2pro.function.service.MockTranslationService.Response;
 import hermes2pro.function.service.SearchGoogle;

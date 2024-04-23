@@ -1,9 +1,10 @@
 package hermes2pro.function.service;
 
-import com.github.reinert.jjschema.Attributes;
-import hermes2pro.function.Argument;
-
 import java.util.function.Function;
+
+import com.github.reinert.jjschema.Attributes;
+
+import functioncall.Argument;
 
 @Attributes(title = "search_google", description = "Search google using the query and return the results")
 public class SearchGoogle implements Function<SearchGoogle.Request, SearchGoogle.Response> {

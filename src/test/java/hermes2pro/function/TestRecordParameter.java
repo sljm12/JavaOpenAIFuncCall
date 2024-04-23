@@ -7,6 +7,8 @@ import org.springframework.ai.openai.samples.helloworld.Application;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 
+import functioncall.RecordParameter;
+
 @SpringBootTest(classes = Application.class)
 @PropertySource("classpath:application.properties")
 class TestRecordParameter {

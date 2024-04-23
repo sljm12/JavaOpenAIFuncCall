@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import functioncall.hermes2pro.Hermes2PromptTemplate;
 import hermes2pro.function.service.MockTranslationService;
 import hermes2pro.function.service.SearchGoogle;
 
