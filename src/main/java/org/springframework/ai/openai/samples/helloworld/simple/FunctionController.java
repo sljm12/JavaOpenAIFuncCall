@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class FunctionController{
+	@Autowired
+	@Qualifier("openAiChatClient")
 	private final ChatClient chatClient;
 	
 	private final String systemPrompt = "You are a function calling AI model. You are provided with function signatures within <tools></tools> XML tags. You may call one or more functions to assist with the user query. Don't make assumptions about what values to plug into functions. \r\n"
@@ -73,7 +76,8 @@ public class FunctionController{
 
 	
 	@Autowired
-	public FunctionController(ChatClient chatClient) {
+	public FunctionController(@Autowired
+			@Qualifier("openAiChatClient") ChatClient chatClient) {
 		this.chatClient=chatClient;
 	}
 	
